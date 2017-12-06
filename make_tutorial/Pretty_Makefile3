@@ -1,0 +1,29 @@
+include config.mk
+
+## results.txt : Generate Zipf summary table.
+results.txt : $(ZIPF_SRC) dats/isles.dat dats/abyss.dat dats/last.dat
+	$(ZIPF_EXE) dats/*.dat > $@
+
+## dats        : Count words in text files.
+.PHONY : dats
+dats : dats/isles.dat dats/abyss.dat dats/last.dat
+
+dats/%.dat : books/%.txt $(COUNT_SRC)
+	$(COUNT_EXE) $< dats/$*.dat
+
+## pngs        : Create word count plots.
+.PHONY : pngs
+pngs : pngs/isles.png pngs/abyss.png pngs/last.png
+
+pngs/%.png : dats/isles.dat $(PLOT_SRC)
+	$(PLOT_EXE) $< pngs/$*.png
+
+## clean       : Remove auto-generated files.
+.PHONY : clean
+clean :
+	rm -f dats/*.dat
+	rm -f results.txt
+
+.PHONY : help
+help : Pretty_Makefile2
+	@sed -n 's/^##//p' $<

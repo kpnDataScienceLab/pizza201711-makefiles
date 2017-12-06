@@ -1,0 +1,4 @@
+Book	First	Second	Ratio
+dats/abyss	4044	2807	1.44
+dats/isles	3822	2460	1.55
+dats/last	12244	5566	2.20

@@ -1,0 +1,34 @@
+# Generate summary table.
+results.txt : zipf_test.py dats/isles.dat dats/abyss.dat dats/last.dat
+	python $< dats/*.dat > $@
+
+# Count words.
+.PHONY : dats
+dats : dats/isles.dat dats/abyss.dat dats/last.dat
+
+dats/isles.dat : books/isles.txt wordcount.py
+	python wordcount.py $< $@
+
+dats/abyss.dat : books/abyss.txt wordcount.py
+	python wordcount.py $< $@
+
+dats/last.dat : books/last.txt wordcount.py
+	python wordcount.py $< $@
+
+# Create pngs.
+.PHONY : pngs
+pngs : pngs/isles.png pngs/abyss.png pngs/last.png
+
+pngs/isles.png : dats/isles.dat plotcount.py
+	python plotcount.py $< $@
+
+pngs/abyss.png : dats/abyss.dat plotcount.py
+	python plotcount.py $< $@
+
+pngs/last.png : dats/last.dat plotcount.py
+	python plotcount.py $< $@
+
+.PHONY : clean
+clean :
+	rm -f dats/*.dat
+	rm -f results.txt
